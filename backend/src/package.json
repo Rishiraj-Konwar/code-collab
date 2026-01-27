@@ -1,10 +1,10 @@
 {
   "name": "src",
   "module": "index.ts",
-  "type": "commonjs",
+  "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch ./index.ts"
+    "dev": "bun --watch index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
