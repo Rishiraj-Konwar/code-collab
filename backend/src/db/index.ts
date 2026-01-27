@@ -1,0 +1,1 @@
+export * as DbConfig from "./connect-db"
