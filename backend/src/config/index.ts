@@ -1,1 +1,1 @@
-export * as ServerConfig from "./server"
+export * as ServerConfig from "./server-config"

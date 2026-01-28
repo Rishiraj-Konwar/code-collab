@@ -1,0 +1,25 @@
+{
+  "development": {
+    "username": "rishi",
+    "password": "rishi123",
+    "database": "code-collab-db",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 4000
+  },
+  "test": {
+    "username": "rishi",
+    "password": "rishi123",
+    "database": "code-collab-db",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 4000
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
