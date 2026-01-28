@@ -5,7 +5,8 @@ export const User = DbConfig.sequelize.define("User", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
-    primaryKey: true
+    primaryKey: true,
+    allowNull: false
   },
   username: {
     type: DataTypes.STRING,
