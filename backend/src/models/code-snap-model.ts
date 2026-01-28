@@ -1,7 +1,7 @@
 import {DataTypes} from "sequelize"
 import {DbConfig} from "../db"
 
-export const Code = DbConfig.sequelize.define("Code", {
+export const CodeSnap = DbConfig.sequelize.define("CodeSnap", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

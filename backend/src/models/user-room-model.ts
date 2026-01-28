@@ -1,7 +1,7 @@
 import {DataTypes} from "sequelize"
 import {DbConfig} from "../db"
 
-export const userRoom = DbConfig.sequelize.define("UserRoom", {
+export const UserRoom = DbConfig.sequelize.define("UserRoom", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
