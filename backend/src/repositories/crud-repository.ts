@@ -1,6 +1,6 @@
 import type { Model, ModelStatic } from "sequelize";
-import { AppError, ErrorMessages } from "../utils";
-import type { ErrorInfo } from "../types";
+import { AppError } from "../utils";
+import { StatusCodes } from "http-status-codes";
 export class CrudRepository {
   public model: ModelStatic<Model>;
   constructor(model: ModelStatic<Model>) {
@@ -13,7 +13,7 @@ export class CrudRepository {
   async get(data: any): Promise<Model> {
     const response = await this.model.findByPk(data);
     if (!response) {
-      throw new AppError(ErrorMessages.notFound as ErrorInfo);
+      throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
     }
     return response;
   }
@@ -28,11 +28,11 @@ export class CrudRepository {
       },
     });
     if (response[0] == 0) {
-      throw new AppError(ErrorMessages.notFound as ErrorInfo);
+      throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
     }
     const updatedResponse = await this.model.findByPk(id);
     if (!updatedResponse) {
-      throw new AppError(ErrorMessages.notFound as ErrorInfo);
+      throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
     }
     return updatedResponse;
   }
@@ -43,7 +43,7 @@ export class CrudRepository {
       },
     });
     if (!response) {
-      throw new AppError(ErrorMessages.notFound as ErrorInfo);
+      throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
     }
     return response;
   }

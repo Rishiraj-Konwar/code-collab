@@ -1,10 +1,10 @@
-import type { ErrorInfo } from "../../types"
 export class AppError extends Error{
   public statusCode: number
-  public errorInfo: string
-  constructor(erroInfo: ErrorInfo){
-    super(erroInfo.message)
-    this.statusCode = erroInfo.statusCode
-    this.errorInfo = erroInfo.message
+  public errorInfo: string | string[]
+  constructor(message: string | string[], statusCode: number){
+    const messages = Array.isArray(message) ? message.join(". ") : message
+    super(messages)
+    this.statusCode = statusCode
+    this.errorInfo = message
   }
 }
