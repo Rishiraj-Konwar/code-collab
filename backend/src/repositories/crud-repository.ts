@@ -1,5 +1,6 @@
 import {StatusCodes} from "http-status-codes"
 import type { Model, ModelStatic } from "sequelize"
+import { AppError } from "../utils"
 export class CrudRepository {
   public model: ModelStatic<Model>
   constructor(model: ModelStatic<Model>){
@@ -11,6 +12,10 @@ export class CrudRepository {
   }
   async get(data: any) {
     const response = await this.model.findByPk(data)
+    if (!response){
+      throw new AppError.AppError("ashdfb1", 232)
+
+    }
     return response
   }
 }
