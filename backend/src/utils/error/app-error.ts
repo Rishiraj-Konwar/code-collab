@@ -1,9 +1,10 @@
+import type { ErrorInfo } from "../../types"
 export class AppError extends Error{
   public statusCode: number
   public errorInfo: string
-  constructor(message: string, statusCode: number){
-    super(message)
-    this.statusCode = statusCode
-    this.errorInfo = message
+  constructor(erroInfo: ErrorInfo){
+    super(erroInfo.message)
+    this.statusCode = erroInfo.statusCode
+    this.errorInfo = erroInfo.message
   }
 }
