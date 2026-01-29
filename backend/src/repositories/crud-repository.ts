@@ -1,4 +1,3 @@
-import { StatusCodes } from "http-status-codes";
 import type { Model, ModelStatic } from "sequelize";
 import { AppError, ErrorMessages } from "../utils";
 import type { ErrorInfo } from "../types";
