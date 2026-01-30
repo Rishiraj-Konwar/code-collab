@@ -10,7 +10,7 @@ export class CrudRepository {
     const response = await this.model.create(data);
     return response;
   }
-  async get(data: any): Promise<Model> {
+  async get(data: any): Promise<Model>{
     const response = await this.model.findByPk(data);
     if (!response) {
       throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);

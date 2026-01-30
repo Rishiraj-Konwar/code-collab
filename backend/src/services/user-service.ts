@@ -19,3 +19,15 @@ export async function createUser(data: {username: string, email: string, passwor
   })
   return newUser
 }
+
+export async function getUser(id: string): Promise<Model>{
+  try{
+    const user = await userRepository.get(id)
+    return user
+  }catch(err: any){
+    if (err.statusCode = StatusCodes.NOT_FOUND){
+      throw new AppError(`Cannot find any user with id: ${id}`, StatusCodes.NOT_FOUND)
+    }
+    throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+}
