@@ -63,17 +63,17 @@ export async function updateUser(data: any, id: string): Promise<Model>{
 }
 
 export async function updatePassword(data: {id: string, oldPass: string, newPass: string}){
-  const user: Model<UserAttributes> = await userRepository.get(data.id)
+  const user = await userRepository.get(data.id)
   if (!user){
     throw new AppError("Cannot find any such user", StatusCodes.NOT_FOUND)
   }
   try{
-    const isMatch = await bcrypt.compare(data.oldPass, user.hashedPassword)
+    const isMatch = await bcrypt.compare(data.oldPass, user.dataValues.hashedPassword)
     if (!isMatch) {
       throw new AppError("Old password is incorrect", StatusCodes.UNAUTHORIZED)
     }
-    const hashedPassword = await bcrypt.hash(data.newPass, 10)
-    const response = await userRepository.update(hashedPassword, data.id)
+    const newHashedPassword = await bcrypt.hash(data.newPass, 10)
+    const response = await userRepository.update({hashedPassword: newHashedPassword}, data.id)
     return response
   }catch(err:any){
     throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
