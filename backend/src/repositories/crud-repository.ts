@@ -1,27 +1,27 @@
 import type { Model, ModelStatic } from "sequelize";
 import { AppError } from "../utils";
 import { StatusCodes } from "http-status-codes";
-export class CrudRepository {
-  public model: ModelStatic<Model>;
-  constructor(model: ModelStatic<Model>) {
+export class CrudRepository<T extends Model> {
+  public model: ModelStatic<T>;
+  constructor(model: ModelStatic<T>) {
     this.model = model;
   }
-  async create(data: any): Promise<Model> {
+  async create(data: any): Promise<T> {
     const response = await this.model.create(data);
     return response;
   }
-  async get(data: any): Promise<Model>{
+  async get(data: any): Promise<T>{
     const response = await this.model.findByPk(data);
     if (!response) {
       throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
     }
     return response;
   }
-  async getAll(): Promise<Model[]> {
+  async getAll(): Promise<T[]> {
     const response = await this.model.findAll();
     return response;
   }
-  async update(data: any, id: string): Promise<Model> {
+  async update(data: Partial<T>, id: any): Promise<T> {
     const response = await this.model.update(data, {
       where: {
         id: id,
@@ -36,7 +36,7 @@ export class CrudRepository {
     }
     return updatedResponse;
   }
-  async delete(id: string) {
+  async delete(id: any): Promise<number>{
     const response = await this.model.destroy({
       where: {
         id: id,
