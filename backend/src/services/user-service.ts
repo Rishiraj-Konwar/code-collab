@@ -25,8 +25,20 @@ export async function getUser(id: string): Promise<Model>{
     const user = await userRepository.get(id)
     return user
   }catch(err: any){
-    if (err.statusCode = StatusCodes.NOT_FOUND){
+    if (err.statusCode == StatusCodes.NOT_FOUND){
       throw new AppError(`Cannot find any user with id: ${id}`, StatusCodes.NOT_FOUND)
+    }
+    throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+}
+
+export async function updateUser(data: any, id: string): Promise<Model>{
+  try{
+    const updatedUser = await userRepository.update(data, id)
+    return updatedUser
+  }catch(err: any){
+    if (err.statusCode == StatusCodes.NOT_FOUND){
+      throw new AppError("Cannot find any such user to update", StatusCodes.NOT_FOUND)
     }
     throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
   }
