@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, type ModelStatic } from "sequelize";
 import { DbConfig } from "../db";
+import type { MessageInstance } from "../types";
 
-export const Message = DbConfig.sequelize.define("Message", {
+export const Message: ModelStatic<MessageInstance> = DbConfig.sequelize.define("Message", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

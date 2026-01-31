@@ -10,23 +10,46 @@ interface UserAttributes {
 export interface UserInstance extends Model<UserAttributes>, UserAttributes {}
 
 interface RoomAttributes {
-  roomId: string;
+  roomId?: string;
   name: string;
   description: string;
   slug: string;
 }
 
-export interface RoomIstance extends Model<RoomAttributes> {}
+export interface RoomIstance extends Model<RoomAttributes>, RoomAttributes {}
 
 enum role {
   HOST = "host",
-  USER = "user"
+  USER = "user",
 }
 interface UserRoomAttributes {
   id?: string;
-  userId: string,
-  roomId: string,
-  role: role
+  userId: string;
+  roomId: string;
+  role: role;
 }
 
-export interface UserRoomInstance extends Model<UserRoomAttributes>{}
+export interface UserRoomInstance
+  extends Model<UserRoomAttributes>, RoomAttributes {}
+
+interface MessageAttributes {
+  id?: string;
+  content: string;
+  type: string;
+  userId: string;
+  roomId: string;
+}
+
+export interface MessageInstance
+  extends Model<MessageAttributes>, MessageAttributes {}
+
+interface CodeSnapAttributes {
+  id?: string;
+  hostId: string;
+  roomId: string;
+  code: string;
+  language: string;
+}
+
+export interface CodeSnapInstance
+  extends Model<CodeSnapAttributes>, CodeSnapAttributes {}

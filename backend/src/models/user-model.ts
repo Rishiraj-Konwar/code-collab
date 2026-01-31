@@ -1,8 +1,8 @@
-import {DataTypes} from "sequelize"
+import {DataTypes, type ModelStatic} from "sequelize"
 import {DbConfig} from "../db"
 import type { UserInstance } from "../types"
 
-export const User = DbConfig.sequelize.define<UserInstance>("User", {
+export const User: ModelStatic<UserInstance> = DbConfig.sequelize.define("User", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

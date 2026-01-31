@@ -1,7 +1,8 @@
-import {DataTypes} from "sequelize"
+import {DataTypes, type ModelStatic} from "sequelize"
 import {DbConfig} from "../db"
+import type { CodeSnapInstance } from "../types"
 
-export const CodeSnap = DbConfig.sequelize.define("CodeSnap", {
+export const CodeSnap: ModelStatic<CodeSnapInstance> = DbConfig.sequelize.define("CodeSnap", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

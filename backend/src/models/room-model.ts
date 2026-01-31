@@ -1,8 +1,8 @@
-import {DataTypes} from "sequelize"
+import {DataTypes, type ModelStatic} from "sequelize"
 import {DbConfig} from "../db"
 import type { RoomIstance } from "../types"
 
-export const Room = DbConfig.sequelize.define<RoomIstance>("Room",{
+export const Room: ModelStatic<RoomIstance> = DbConfig.sequelize.define("Room",{
   roomId: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
