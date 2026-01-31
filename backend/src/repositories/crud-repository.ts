@@ -7,10 +7,12 @@ export class CrudRepository<T extends Model> {
     this.model = model;
   }
   async create(data: any, transaction?: any): Promise<T> {
-    const response = await this.model.create(data, {transaction: transaction});
+    const response = await this.model.create(data, {
+      transaction: transaction,
+    });
     return response;
   }
-  async get(data: any): Promise<T>{
+  async get(data: any): Promise<T> {
     const response = await this.model.findByPk(data);
     if (!response) {
       throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
@@ -36,7 +38,7 @@ export class CrudRepository<T extends Model> {
     }
     return updatedResponse;
   }
-  async delete(id: any): Promise<number>{
+  async delete(id: any): Promise<number> {
     const response = await this.model.destroy({
       where: {
         id: id,
