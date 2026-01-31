@@ -21,12 +21,11 @@ export class CrudRepository<T extends Model> {
     const response = await this.model.findAll();
     return response;
   }
-  async update(data: Partial<T>, id: any, transaction?: any): Promise<T> {
+  async update(data: Partial<T>, id: any): Promise<T> {
     const response = await this.model.update(data, {
       where: {
         id: id,
       },
-      transaction: transaction
     });
     if (response[0] == 0) {
       throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
