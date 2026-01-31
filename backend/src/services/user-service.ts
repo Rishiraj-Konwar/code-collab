@@ -1,12 +1,12 @@
-import { Model } from "sequelize";
 import { UserRepository } from "../repositories";
 import { AppError } from "../utils";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt"
+import type { UserInstance } from "../types";
 
 const userRepository = new UserRepository()
 
-export async function createUser(data: {username: string, email: string, password: string}): Promise<Model>{
+export async function createUser(data: {username: string, email: string, password: string}): Promise<UserInstance>{
   const existingUser = await userRepository.getByEmail(data.email)
   if (existingUser){
     throw new AppError("User already exists", StatusCodes.BAD_REQUEST)
@@ -31,7 +31,7 @@ export async function createUser(data: {username: string, email: string, passwor
   }
 }
 
-export async function getUser(id: string): Promise<Model>{
+export async function getUser(id: string): Promise<UserInstance>{
   try{
     const user = await userRepository.get(id)
     return user
@@ -43,12 +43,12 @@ export async function getUser(id: string): Promise<Model>{
   }
 }
 
-export async function updateUser(data: any, id: string): Promise<Model>{
+export async function updateUser(data: {userName?: string, email?: string}, id: string): Promise<UserInstance>{
   try{
     const updatedUser = await userRepository.update(data, id)
     return updatedUser
   }catch(err: any){
-    if (err.name == "SequelizeValidationError"){
+    if (err.name == "SequelizeValidationError" || err.name == "SequelizeUniqueConstraintError"){
       let errorInfo: string[] = []
       err.errors.forEach((val: any) => {
         errorInfo.push(val.message)
@@ -62,7 +62,7 @@ export async function updateUser(data: any, id: string): Promise<Model>{
   }
 }
 
-export async function updatePassword(data: {id: string, oldPass: string, newPass: string}){
+export async function updatePassword(data: {id: string, oldPass: string, newPass: string}): Promise<UserInstance>{
   const user = await userRepository.get(data.id)
   if (!user){
     throw new AppError("Cannot find any such user", StatusCodes.NOT_FOUND)

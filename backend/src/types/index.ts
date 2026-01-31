@@ -12,7 +12,7 @@ export interface UserInstance extends Model<UserAttributes>, UserAttributes {}
 interface RoomAttributes {
   roomId?: string;
   name: string;
-  description: string;
+  description?: string;
   slug: string;
 }
 
