@@ -36,7 +36,32 @@ export async function createRoom(data: {
       return response;
     });
     return room;
-  } catch (err) {
+  } catch (err: any) {
+    if (err instanceof AppError) {
+      throw err;
+    }
+    throw new AppError(
+      "Something went wrong",
+      StatusCodes.INTERNAL_SERVER_ERROR,
+    );
+  }
+}
+
+export async function updateRoom(
+  data: {
+    name?: string;
+    description?: string;
+  },
+  roomId: string,
+): Promise<RoomIstance> {
+  const updateData: any = {... data}
+  try {
+    if (data.name){
+      updateData.slug = `${data.name.toLocaleLowerCase().replace(/ /g, "-")}-${roomId}`
+    }
+    const updatedRoom = await roomRepository.update(updateData, roomId)
+    return updatedRoom
+    } catch (err: any) {
     if (err instanceof AppError) {
       throw err;
     }
