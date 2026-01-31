@@ -71,3 +71,14 @@ export async function updateRoom(
     );
   }
 }
+export async function deleteRoom(id: string): Promise<number> {
+  try{
+    const response = await roomRepository.delete(id)
+    return response
+  }catch(err){
+    if (err instanceof AppError){
+      throw err
+    }
+    throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+}
