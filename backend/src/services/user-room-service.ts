@@ -17,7 +17,10 @@ export async function joinRoom(
     if (!roomExist) {
       throw new AppError("Cannot find any such room", StatusCodes.NOT_FOUND);
     }
-    const userExist = await userRoomRepository.getByUserId(userId, roomId);
+    const userExist = await userRoomRepository.getByUserId({
+      userId: userId,
+      roomId: roomId,
+    });
     if (userExist) {
       throw new AppError(
         "User already exists in this room",
@@ -28,6 +31,33 @@ export async function joinRoom(
       roomId: roomId,
       userId: userId,
       role: "user",
+    });
+    return response;
+  } catch (err) {
+    if (err instanceof AppError) {
+      throw err;
+    }
+    throw new AppError(
+      "Something went wrong",
+      StatusCodes.INTERNAL_SERVER_ERROR,
+    );
+  }
+}
+export async function leaveRoom(userId: string, slug: string): Promise<number> {
+  try {
+    const slugParts: string[] = slug.split("-");
+    const roomId: string = slugParts.pop() as string;
+    const isUserHost = await userRoomRepository.getByUserId({
+      userId: userId,
+      roomId: roomId,
+    });
+    if (isUserHost?.dataValues.role == "host") {
+      const response = await roomRepository.delete(roomId);
+      return response;
+    }
+    const response = await userRoomRepository.delete({
+      userId: userId,
+      roomId: roomId,
     });
     return response;
   } catch (err) {
