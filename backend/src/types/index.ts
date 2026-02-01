@@ -31,18 +31,6 @@ interface UserRoomAttributes {
 
 export interface UserRoomInstance
   extends Model<UserRoomAttributes>, RoomAttributes {}
-
-interface MessageAttributes {
-  id?: string;
-  content: string;
-  type: string;
-  userId: string;
-  roomId: string;
-}
-
-export interface MessageInstance
-  extends Model<MessageAttributes>, MessageAttributes {}
-
 interface CodeSnapAttributes {
   id?: string;
   hostId: string;

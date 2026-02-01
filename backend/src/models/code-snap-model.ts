@@ -31,6 +31,10 @@ export const CodeSnap: ModelStatic<CodeSnapInstance> = DbConfig.sequelize.define
   language: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  output: {
+    type: DataTypes.TEXT,
+    allowNull: false
   }
 },{
   timestamps: true
