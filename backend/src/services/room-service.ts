@@ -1,15 +1,19 @@
 import { StatusCodes } from "http-status-codes";
 import { sequelize } from "../db/connect-db";
-import { RoomRepository } from "../repositories";
+import { RoomRepository, UserRoomRepository} from "../repositories";
 import type { RoomIstance } from "../types";
 import { AppError } from "../utils";
 
 const roomRepository = new RoomRepository();
+const userRoomRepository = new UserRoomRepository();
 
-export async function createRoom(data: {
-  name: string;
-  description?: string;
-}): Promise<RoomIstance> {
+export async function createRoom(
+  data: {
+    name: string;
+    description?: string;
+  },
+  userId: string,
+): Promise<RoomIstance> {
   try {
     const room = await sequelize.transaction(async (t) => {
       const response = await roomRepository.create(
@@ -33,6 +37,14 @@ export async function createRoom(data: {
           transaction: t,
         },
       );
+      await userRoomRepository.create(
+        {
+          roomId: response.dataValues.roomId,
+          userId: userId,
+          role: "host",
+        },
+        t,
+      );
       return response;
     });
     return room;
@@ -54,14 +66,14 @@ export async function updateRoom(
   },
   roomId: string,
 ): Promise<RoomIstance> {
-  const updateData: any = {... data}
+  const updateData: any = { ...data };
   try {
-    if (data.name){
-      updateData.slug = `${data.name.toLocaleLowerCase().replace(/ /g, "-")}-${roomId}`
+    if (data.name) {
+      updateData.slug = `${data.name.toLocaleLowerCase().replace(/ /g, "-")}-${roomId}`;
     }
-    const updatedRoom = await roomRepository.update(updateData, roomId)
-    return updatedRoom
-    } catch (err: any) {
+    const updatedRoom = await roomRepository.update(updateData, roomId);
+    return updatedRoom;
+  } catch (err: any) {
     if (err instanceof AppError) {
       throw err;
     }
@@ -71,14 +83,18 @@ export async function updateRoom(
     );
   }
 }
+
 export async function deleteRoom(id: string): Promise<number> {
-  try{
-    const response = await roomRepository.delete(id)
-    return response
-  }catch(err){
-    if (err instanceof AppError){
-      throw err
+  try {
+    const response = await roomRepository.delete(id);
+    return response;
+  } catch (err) {
+    if (err instanceof AppError) {
+      throw err;
     }
-    throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
+    throw new AppError(
+      "Something went wrong",
+      StatusCodes.INTERNAL_SERVER_ERROR,
+    );
   }
 }
