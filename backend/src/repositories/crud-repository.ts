@@ -2,6 +2,7 @@ import type { Model, ModelStatic } from "sequelize";
 import { AppError } from "../utils";
 import { StatusCodes } from "http-status-codes";
 export class CrudRepository<T extends Model> {
+
   public model: ModelStatic<T>;
   constructor(model: ModelStatic<T>) {
     this.model = model;
