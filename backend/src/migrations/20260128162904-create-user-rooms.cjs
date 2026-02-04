@@ -27,10 +27,6 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      role: {
-        type: Sequelize.ENUM("host", "user"),
-        defaultValue: "user",
-      },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE },
     });

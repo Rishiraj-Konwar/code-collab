@@ -24,10 +24,6 @@ export const UserRoom: ModelStatic<UserRoomInstance> = DbConfig.sequelize.define
       key: "roomId"
     }
   },
-  role: {
-    type: DataTypes.ENUM("host", "user"),
-    defaultValue: "user"
-  }
 },{
   timestamps: true
 })

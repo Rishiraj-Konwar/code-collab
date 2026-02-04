@@ -17,16 +17,10 @@ interface RoomAttributes {
 }
 
 export interface RoomIstance extends Model<RoomAttributes>, RoomAttributes {}
-
-enum role {
-  HOST = "host",
-  USER = "user",
-}
 interface UserRoomAttributes {
   id?: string;
   userId: string;
   roomId: string;
-  role: role;
 }
 
 export interface UserRoomInstance
