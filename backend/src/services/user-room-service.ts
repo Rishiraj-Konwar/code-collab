@@ -29,3 +29,9 @@ export async function joinRoom(
   }
   return response
 }
+
+export async function leaveRoom(userId: string, hostId: string) {
+  if (userId === hostId){
+    
+  }
+}
