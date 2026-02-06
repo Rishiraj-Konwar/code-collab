@@ -35,6 +35,25 @@ export async function createUser(data: {
   }
 }
 
+export async function loginUser(data: {email: string, password: string}): Promise<UserInstance>{
+  try{
+    const user = await userRepository.getByEmail(data.email)
+    if (!user){
+      throw new AppError("Inavlid email or password", StatusCodes.UNAUTHORIZED)
+    }
+    const isMatch = await bcrypt.compare(data.password, user.dataValues.hashedPassword)
+    if (!isMatch){
+      throw new AppError("Invalid email or password", StatusCodes.UNAUTHORIZED)
+    }
+    return user
+  }catch(err: any){
+    if (err instanceof AppError){
+      throw err
+    }
+    throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+}
+
 export async function getUser(id: string): Promise<UserInstance> {
   try {
     const user = await userRepository.get(id);
