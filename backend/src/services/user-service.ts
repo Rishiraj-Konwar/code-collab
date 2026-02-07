@@ -60,7 +60,7 @@ export async function getUser(id: string): Promise<UserInstance> {
     return user;
   } catch (err: any) {
     if (err.statusCode == StatusCodes.NOT_FOUND) {
-      throw new AppError("Cannot find any such user", StatusCodes.NOT_FOUND);
+      throw err
     }
     throw new AppError(
       "Something went wrong",
@@ -87,11 +87,8 @@ export async function updateUser(
       });
       throw new AppError(errorInfo, StatusCodes.BAD_REQUEST);
     }
-    if (err.statusCode == StatusCodes.NOT_FOUND) {
-      throw new AppError(
-        "Cannot find any such user to update",
-        StatusCodes.NOT_FOUND,
-      );
+    if (err.statusCode == StatusCodes.NOT_FOUND || StatusCodes.INTERNAL_SERVER_ERROR) {
+      throw err
     }
     throw new AppError(
       "Something went wrong",
@@ -101,11 +98,10 @@ export async function updateUser(
 }
 
 export async function updatePassword(data: {
-  id: string;
   oldPass: string;
   newPass: string;
-}): Promise<UserInstance> {
-  const user = await userRepository.get(data.id);
+}, id: string): Promise<UserInstance> {
+  const user = await userRepository.get(id);
   if (!user) {
     throw new AppError("Cannot find any such user", StatusCodes.NOT_FOUND);
   }
@@ -119,8 +115,7 @@ export async function updatePassword(data: {
     }
     const newHashedPassword = await bcrypt.hash(data.newPass, 10);
     const response = await userRepository.update(
-      { hashedPassword: newHashedPassword },
-      data.id,
+      { hashedPassword: newHashedPassword }, id
     );
     return response;
   } catch (err: any) {

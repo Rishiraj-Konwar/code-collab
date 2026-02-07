@@ -35,7 +35,7 @@ export class CrudRepository<T extends Model> {
     }
     const updatedResponse = await this.model.findByPk(id);
     if (!updatedResponse) {
-      throw new AppError("Cannot find any resource", StatusCodes.NOT_FOUND);
+      throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR);
     }
     return updatedResponse;
   }
