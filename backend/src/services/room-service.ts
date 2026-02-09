@@ -86,12 +86,16 @@ export async function updateRoom(
   }
 }
 
-export async function deleteRoom(slug: string): Promise<number> {
+export async function deleteRoom(slug: string, userId: string, hostId: string): Promise<number> {
   try {
     const slugParts = slug.split("-")
     const roomId = slugParts.pop()
+    if(hostId === userId){
     const response = await roomRepository.delete(roomId);
     return response;
+  }else{
+    throw new AppError("Only the host can delete the room", StatusCodes.UNAUTHORIZED)
+  }
   } catch (err) {
     if (err instanceof AppError) {
       throw err;

@@ -18,7 +18,26 @@ export async function createRoom(req: any, res: Response){
 
 export async function updateRoom(req: any, res: Response){
   try{
-    const slug = req.params
-    const room = await RoomService.updateRoom()
+    const { slug } = req.params
+    const data = {... req.body}
+    const room = await RoomService.updateRoom(data, slug)
+    SuccessResponse.data = room
+    return res.status(StatusCodes.OK).json(SuccessResponse)
+  }catch(err: any){
+    ErrorResponse.error = err
+    return res.status(err.statusCode).json(ErrorResponse)
+  }
+}
+
+export async function deleteRoom(req: any, res: Response){
+  try{
+    const { slug } = req.params
+    const {userId, hostId } = req.user
+    const response = await RoomService.deleteRoom(slug, userId, hostId)
+    SuccessResponse.data = response
+    return res.status(StatusCodes.NO_CONTENT).json(SuccessResponse)
+  }catch(err: any){
+    ErrorResponse.error = err
+    return res.status(err.statusCode).json(ErrorResponse)
   }
 }
