@@ -15,3 +15,10 @@ export async function createRoom(req: any, res: Response){
     return res.status(err.statusCode).json(ErrorResponse)
   }
 }
+
+export async function updateRoom(req: any, res: Response){
+  try{
+    const slug = req.params
+    const room = await RoomService.updateRoom()
+  }
+}

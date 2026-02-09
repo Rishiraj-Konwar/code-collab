@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { sequelize } from "../db/connect-db";
-import { RoomRepository, UserRoomRepository} from "../repositories";
+import { RoomRepository, UserRoomRepository } from "../repositories";
 import type { RoomIstance } from "../types";
 import { AppError } from "../utils";
 
@@ -64,10 +64,12 @@ export async function updateRoom(
     name?: string;
     description?: string;
   },
-  roomId: string,
+  slug: string,
 ): Promise<RoomIstance> {
   const updateData: any = { ...data };
   try {
+    const slugParts = slug.split("-");
+    const roomId = slugParts.pop();
     if (data.name) {
       updateData.slug = `${data.name.toLocaleLowerCase().replace(/ /g, "-")}-${roomId}`;
     }
@@ -84,9 +86,11 @@ export async function updateRoom(
   }
 }
 
-export async function deleteRoom(id: string): Promise<number> {
+export async function deleteRoom(slug: string): Promise<number> {
   try {
-    const response = await roomRepository.delete(id);
+    const slugParts = slug.split("-")
+    const roomId = slugParts.pop()
+    const response = await roomRepository.delete(roomId);
     return response;
   } catch (err) {
     if (err instanceof AppError) {
