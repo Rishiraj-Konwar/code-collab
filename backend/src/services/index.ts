@@ -1,2 +1,4 @@
 export * as UserService from "./user-service"
 export * as RoomService from "./room-service"
+export * as UserRoomService from "./user-room-service"
+export * as CodeSnapService from "./code-snap-services"

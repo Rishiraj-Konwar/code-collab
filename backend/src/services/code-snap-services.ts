@@ -8,7 +8,7 @@ const codeSnapRespository = new CodeSnapRepository()
 
 export async function sendOutput(language: string, data:{
   hostId: string,
-  roomId: string,
+  slug: string,
   code: string
 }): Promise<CodeSnapInstance>{
   try{
@@ -20,9 +20,11 @@ export async function sendOutput(language: string, data:{
     throw new AppError("Cannot get the output", StatusCodes.INTERNAL_SERVER_ERROR)
   }
   const output = result.run.output
+  const slugParts = data.slug.split("-")
+  const roomId = slugParts.pop()
   const response = await codeSnapRespository.create({
     hostId: data.hostId,
-    roomId: data.roomId,
+    roomId: roomId,
     code: data.code,
     language: language,
     output: output

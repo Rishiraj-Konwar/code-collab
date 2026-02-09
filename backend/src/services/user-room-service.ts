@@ -30,8 +30,16 @@ export async function joinRoom(
   return response
 }
 
-export async function leaveRoom(userId: string, hostId: string) {
+export async function leaveRoom(slug: string, userId: string, hostId: string) {
+  const slugParts = slug.split("-")
+  const roomId = slugParts.pop()
   if (userId === hostId){
-    
+    const response = await roomRepository.delete(roomId)
+    return response
   }
+  const response = await userRoomRepository.delete(userId)
+  if(!response){
+    throw new AppError("Something went wrong", StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+  return response
 }
