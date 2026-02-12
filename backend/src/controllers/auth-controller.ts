@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { UserService } from "../services";
+import { AuthService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken"
@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken"
 export async function signUp(req: Request, res: Response) {
   const { username, email, password } = req.body;
   try {
-    const user = await UserService.createUser({
+    const user = await AuthService.createUser({
       username: username,
       email: email,
       password: password,
@@ -33,7 +33,7 @@ export async function signUp(req: Request, res: Response) {
 export async function login(req: Request, res: Response){
   const {email, password} = req.body
   try{
-    const user = await UserService.loginUser({
+    const user = await AuthService.loginUser({
       email: email,
       password: password
     })
