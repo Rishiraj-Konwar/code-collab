@@ -1,5 +1,5 @@
 import type { Model } from "sequelize";
-
+import type { Request } from "express";
 interface UserAttributes {
   id?: string;
   username: string;
@@ -36,3 +36,12 @@ interface CodeSnapAttributes {
 
 export interface CodeSnapInstance
   extends Model<CodeSnapAttributes>, CodeSnapAttributes {}
+
+
+
+export interface RequestObj extends Request {
+  user: {
+    id: string,
+    email: string
+  }
+}
