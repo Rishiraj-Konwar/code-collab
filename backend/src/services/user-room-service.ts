@@ -8,7 +8,7 @@ const roomRepository = new RoomRepository();
 
 export async function joinRoom(
   userId: string,
-  slug: string,
+  slug: any,
 ): Promise<{ userRoom: UserRoomInstance; hostId: string }> {
   const slugParts = slug.split("-");
   const roomId = slugParts.pop();

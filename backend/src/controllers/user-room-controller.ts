@@ -3,8 +3,9 @@ import { UserRoomService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils";
 import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
+import type { RequestObj } from "../types";
 
-export async function joinRoom(req: any, res: Response) {
+export async function joinRoom(req: RequestObj, res: Response) {
   try{
   const userId = req.user.id;
   const { slug } = req.params;
@@ -16,6 +17,8 @@ export async function joinRoom(req: any, res: Response) {
     userId: userId,
     role: "user"
   }, process.env.JWT_KEY as string)
+
+  res.cookie("room-token", roomToken)
 
   SuccessResponse.data = {response, roomToken};
 

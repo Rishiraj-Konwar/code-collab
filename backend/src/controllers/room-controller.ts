@@ -1,8 +1,9 @@
 import type { Response } from "express";
 import { RoomService } from "../services";
-import { ErrorResponse, SuccessResponse } from "../utils";
+import { AppError, ErrorResponse, SuccessResponse } from "../utils";
 import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
+import type { RequestObj } from "../types";
 
 export async function createRoom(req: any, res: Response){
   try{
@@ -27,6 +28,11 @@ export async function createRoom(req: any, res: Response){
 }
 
 export async function updateRoom(req: any, res: Response){
+  const role = req.room!.role
+  if (role !== "host"){
+    ErrorResponse.error = new AppError("Only the host can edit a room", StatusCodes.UNAUTHORIZED)
+    return res.status(StatusCodes.UNAUTHORIZED).json(ErrorResponse)
+  }
   try{
     const { slug } = req.params
     const data = {... req.body}
@@ -39,11 +45,15 @@ export async function updateRoom(req: any, res: Response){
   }
 }
 
-export async function deleteRoom(req: any, res: Response){
+export async function deleteRoom(req: RequestObj, res: Response){
+  const role = req.room!.role
+  if (role !== "host"){
+    ErrorResponse.error = new AppError("Only the host can delete a room", StatusCodes.UNAUTHORIZED)
+    return res.status(StatusCodes.UNAUTHORIZED).json(ErrorResponse)
+  }
   try{
     const { slug } = req.params
-    const {userId} = req.user
-    const response = await RoomService.deleteRoom(slug, userId)
+    const response = await RoomService.deleteRoom(slug)
     SuccessResponse.data = response
     return res.status(StatusCodes.NO_CONTENT).json(SuccessResponse)
   }catch(err: any){
