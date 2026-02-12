@@ -8,7 +8,7 @@ const codeSnapRespository = new CodeSnapRepository()
 
 export async function sendOutput(language: string, data:{
   hostId: string,
-  slug: string,
+  slug: any,
   code: string
 }): Promise<CodeSnapInstance>{
   try{
