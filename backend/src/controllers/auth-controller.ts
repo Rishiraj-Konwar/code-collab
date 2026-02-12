@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { UserService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils";
 import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken"
 
 export async function signUp(req: Request, res: Response) {
   const { username, email, password } = req.body;
@@ -11,7 +12,17 @@ export async function signUp(req: Request, res: Response) {
       email: email,
       password: password,
     });
-    SuccessResponse.data = user;
+
+    const token = jwt.sign({
+      id: user.dataValues.id,
+      email: user.dataValues.email
+    }, process.env.JWT_KEY as string)
+
+    res.cookie("token", token, {
+      httpOnly: true
+    })
+
+    SuccessResponse.data = { user, token };
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (err: any) {
     ErrorResponse.error = err
@@ -26,7 +37,16 @@ export async function login(req: Request, res: Response){
       email: email,
       password: password
     })
-    SuccessResponse.data = user    
+    const token = jwt.sign({
+      id: user.dataValues.id,
+      email: user.dataValues.email
+    }, process.env.JWT_KEY as string)
+
+    res.cookie("token", token, {
+      httpOnly: true
+    })
+
+    SuccessResponse.data = { user, token }    
     return res.status(StatusCodes.OK).json(SuccessResponse)
   }catch(err: any){
     ErrorResponse.error = err

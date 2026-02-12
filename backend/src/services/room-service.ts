@@ -19,6 +19,7 @@ export async function createRoom(
       const response = await roomRepository.create(
         {
           name: data.name,
+          hostId: userId,
           description: data.description,
           slug: "temp",
         },
@@ -86,11 +87,16 @@ export async function updateRoom(
   }
 }
 
-export async function deleteRoom(slug: string, userId: string, hostId: string): Promise<number> {
+export async function deleteRoom(slug: string, userId: string): Promise<number> {
   try {
     const slugParts = slug.split("-")
     const roomId = slugParts.pop()
-    if(hostId === userId){
+    const room = await roomRepository.get({
+      where:{
+        roomId: roomId
+      }
+    })
+    if(room.dataValues.hostId === userId){
     const response = await roomRepository.delete(roomId);
     return response;
   }else{

@@ -11,6 +11,7 @@ export interface UserInstance extends Model<UserAttributes>, UserAttributes {}
 
 interface RoomAttributes {
   roomId?: string;
+  hostId: string
   name: string;
   description?: string;
   slug: string;

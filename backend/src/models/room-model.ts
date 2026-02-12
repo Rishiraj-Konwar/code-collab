@@ -8,6 +8,10 @@ export const Room: ModelStatic<RoomIstance> = DbConfig.sequelize.define("Room",{
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
+  hostId: {
+    type: DataTypes.UUID,
+    allowNull: false
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
