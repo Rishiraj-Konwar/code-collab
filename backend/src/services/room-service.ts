@@ -65,7 +65,7 @@ export async function updateRoom(
     name?: string;
     description?: string;
   },
-  slug: string,
+  slug: any,
 ): Promise<RoomIstance> {
   const updateData: any = { ...data };
   try {

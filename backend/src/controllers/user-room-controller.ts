@@ -1,11 +1,10 @@
-import type { Response } from "express";
+import type {Request, Response } from "express";
 import { UserRoomService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils";
 import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
-import type { RequestObj } from "../types";
 
-export async function joinRoom(req: RequestObj, res: Response) {
+export async function joinRoom(req: Request, res: Response) {
   try{
   const userId = req.user.id;
   const { slug } = req.params;
@@ -30,10 +29,10 @@ export async function joinRoom(req: RequestObj, res: Response) {
   }
 }
 
-export async function leaveRoom(req: any, res: Response){
+export async function leaveRoom(req: Request, res: Response){
   try{
     const {slug} = req.params
-    const userId = req.user
+    const userId = req.user.id
     const response = await UserRoomService.leaveRoom(slug, userId)
     SuccessResponse.data = response
     return res.status(StatusCodes.NO_CONTENT).json(SuccessResponse)

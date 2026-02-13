@@ -41,15 +41,3 @@ enum role{
   host ="host",
   user = "user"
 }
-
-export interface RequestObj extends Request {
-  user: {
-    id: string,
-    email: string
-  },
-  room?: {
-    hostId: string,
-    userId: string,
-    role: role 
-  }
-}

@@ -1,11 +1,10 @@
 import { CodeSnapService } from "../services"
-import type {Response} from 'express';
+import type {Request, Response} from 'express';
 import { ErrorResponse, SuccessResponse } from "../utils";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils";
-import type { RequestObj } from "../types";
 
-export async function sendOutput(req: RequestObj, res: Response){
+export async function sendOutput(req: Request, res: Response){
   const role = req.room!.role
   if (role !== "host"){
     ErrorResponse.error = new AppError("Only the host can submit", StatusCodes.UNAUTHORIZED)

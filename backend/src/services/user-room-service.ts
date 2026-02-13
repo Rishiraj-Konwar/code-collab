@@ -35,7 +35,7 @@ export async function joinRoom(
   return { userRoom: response, hostId: room.dataValues.hostId };
 }
 
-export async function leaveRoom(slug: string, userId: string) {
+export async function leaveRoom(slug: any, userId: string) {
   const slugParts = slug.split("-");
   const roomId = slugParts.pop();
 

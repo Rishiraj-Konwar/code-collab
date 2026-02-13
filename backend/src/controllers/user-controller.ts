@@ -3,7 +3,7 @@ import { UserService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils";
 import { StatusCodes } from "http-status-codes";
 
-export async function getUser(req: any, res: Response){
+export async function getUser(req: Request, res: Response){
   try{
     const userId = req.user.id
     const user = await UserService.getUser(userId)
@@ -15,7 +15,7 @@ export async function getUser(req: any, res: Response){
   }
 }
 
-export async function updateUser(req: any, res: Response){
+export async function updateUser(req: Request, res: Response){
   try{
     const id = req.user.id
     const newData = {... req.body}
@@ -28,7 +28,7 @@ export async function updateUser(req: any, res: Response){
   }
 }
 
-export async function changePassword(req: any, res: Response){
+export async function changePassword(req: Request, res: Response){
   try{
     const id = req.user.id
     const {oldPass, newPass} = req.body
@@ -41,7 +41,7 @@ export async function changePassword(req: any, res: Response){
   }
 }
 
-export async function deleteUser(req: any, res: Response){
+export async function deleteUser(req: Request, res: Response){
   try{
     const id = req.user.id
     const response = await UserService.deleteUser(id)

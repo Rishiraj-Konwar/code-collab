@@ -1,9 +1,8 @@
-import type { Response, NextFunction } from "express";
-import type { RequestObj } from "../types";
+import type {Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
 
 export function authenticateUser(
-  req: RequestObj,
+  req: Request,
   res: Response,
   next: NextFunction,
 ) {

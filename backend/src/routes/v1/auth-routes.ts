@@ -1,8 +1,7 @@
 import express from "express"
-import type {Request, Response} from "express"
+import { authController } from "../../controllers"
 
 export const authRouter = express.Router()
 
-authRouter.get("/", (req: Request, res: Response) => {
-  res.send("This is the auth route")
-})
+authRouter.post("/signup", authController.signUp)
+authRouter.post("/login", authController.login)
