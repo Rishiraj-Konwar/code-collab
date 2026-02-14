@@ -1,2 +1,4 @@
 export * as authController from "./auth-controller"
 export * as userController from "./user-controller"
+export * as roomController from "./room-controller"
+export * as userRoomController from "./user-room-controller"
